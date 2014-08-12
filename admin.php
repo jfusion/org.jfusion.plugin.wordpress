@@ -9,7 +9,6 @@
  * @link       http://www.jfusion.org
  */
 
-use JFusion\Plugin\Plugin_Admin;
 use JFusion\Factory;
 use JFusion\Framework;
 
@@ -34,7 +33,7 @@ use stdClass;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link       http://www.jfusion.org
  */
-class Admin extends Plugin_Admin
+class Admin extends \JFusion\Plugin\Admin
 {
 	/**
 	 * @var $helper Helper
