@@ -161,8 +161,6 @@ class User extends \JFusion\Plugin\User
      * @return array|bool|string
      */
     function destroySession(Userinfo $userinfo, $options) {
-	    require_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_jfusion' . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'model.curl.php';
-
 	    $status = array(LogLevel::ERROR => array(), LogLevel::DEBUG => array());
 		$wpnonce = array();
 
@@ -285,9 +283,6 @@ class User extends \JFusion\Plugin\User
      */
     function updatePassword(Userinfo $userinfo, Userinfo &$existinguser) {
 	    // get the encryption PHP file
-	    if (!class_exists('PasswordHashOrg')) {
-		    require_once JFUSION_PLUGIN_PATH . DIRECTORY_SEPARATOR . $this->getJname() . DIRECTORY_SEPARATOR . 'PasswordHashOrg.php';
-	    }
 	    $t_hasher = new PasswordHashOrg(8, true);
 	    $existinguser->password = $t_hasher->HashPassword($userinfo->password_clear);
 	    unset($t_hasher);
@@ -421,9 +416,6 @@ class User extends \JFusion\Plugin\User
 		    $default_userlevel = $this->helper->WP_userlevel_from_role(0, $default_role_name);
 		    if (isset($userinfo->password_clear)) {
 			    //we can update the password
-			    if (!class_exists('PasswordHashOrg')) {
-				    require_once JFUSION_PLUGIN_PATH . DIRECTORY_SEPARATOR . $this->getJname() . DIRECTORY_SEPARATOR . 'PasswordHashOrg.php';
-			    }
 			    $t_hasher = new PasswordHashOrg(8, true);
 			    $user_password = $t_hasher->HashPassword($userinfo->password_clear);
 			    unset($t_hasher);
