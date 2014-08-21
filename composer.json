@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "JFusion\\Plugins\\wordpress\\": "."
+            "JFusion\\Plugins\\wordpress\\": "src/"
         }
     }
 }
