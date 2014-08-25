@@ -65,7 +65,7 @@ class User extends \JFusion\Plugin\User
 		    $query = $db->getQuery(true)
 			    ->select('*, ID as userid, display_name as name, user_login as username, user_email as email, user_pass as password, user_registered as registerDate, user_activation_key as activation')
 			    ->from('#__users')
-			    ->where($identifier_type . ' = ' . $db->quote($identifier));
+			    ->where($db->quoteName($identifier_type) . ' = ' . $db->quote($identifier));
 
 		    $db->setQuery($query);
 		    $result = $db->loadObject();
@@ -527,7 +527,7 @@ class User extends \JFusion\Plugin\User
 		    $query = $db->getQuery(true)
 			    ->select('ID')
 			    ->from('#__posts')
-			    ->where('post_author = ' . $user_id);
+			    ->where('post_author = ' . $db->quote($user_id));
 
 		    $db->setQuery($query);
 		    if ($db->execute()) {
@@ -536,7 +536,7 @@ class User extends \JFusion\Plugin\User
 				    foreach ($results as $row) {
 					    $query = $db->getQuery(true)
 						    ->update('#__posts')
-						    ->set('post_author = ' . $reassign)
+						    ->set('post_author = ' . $db->quote($reassign))
 						    ->where('ID = ' . (int)$row->ID);
 
 					    $db->setQuery($query);
@@ -548,7 +548,7 @@ class User extends \JFusion\Plugin\User
 			    $query = $db->getQuery(true)
 				    ->select('link_id')
 				    ->from('#__links')
-				    ->where('link_owner = ' . $user_id);
+				    ->where('link_owner = ' . (int)$user_id);
 
 			    $db->setQuery($query);
 			    if ($db->execute()) {
@@ -557,8 +557,8 @@ class User extends \JFusion\Plugin\User
 					    foreach ($results as $row) {
 						    $query = $db->getQuery(true)
 							    ->update('#__links')
-							    ->set('link_owner = ' . $reassign)
-							    ->where('link_id = ' . $row->link_id);
+							    ->set('link_owner = ' . $db->quote($reassign))
+							    ->where('link_id = ' . (int)$row->link_id);
 
 						    $db->setQuery($query);
 						    $db->execute();
@@ -570,7 +570,7 @@ class User extends \JFusion\Plugin\User
 	    } else {
 		    $query = $db->getQuery(true)
 			    ->delete('#__posts')
-			    ->where('post_author = ' . $user_id);
+			    ->where('post_author = ' . (int)$user_id);
 
 		    $db->setQuery($query);
 		    $db->execute();
@@ -578,7 +578,7 @@ class User extends \JFusion\Plugin\User
 
 		    $query = $db->getQuery(true)
 			    ->delete('#__links')
-			    ->where('link_owner = ' . $user_id);
+			    ->where('link_owner = ' . (int)$user_id);
 
 		    $db->setQuery($query);
 		    $db->execute();
@@ -587,7 +587,7 @@ class User extends \JFusion\Plugin\User
 	    // now delete the user
 	    $query = $db->getQuery(true)
 		    ->delete('#__users')
-		    ->where('ID = ' . $user_id);
+		    ->where('ID = ' . (int)$user_id);
 
 	    $db->setQuery($query);
 	    $db->execute();
@@ -596,7 +596,7 @@ class User extends \JFusion\Plugin\User
 	    // delete usermeta
 	    $query = $db->getQuery(true)
 		    ->delete('#__usermeta')
-		    ->where('user_id = ' . $user_id);
+		    ->where('user_id = ' . (int)$user_id);
 
 	    $db->setQuery($query);
 	    $db->execute();
