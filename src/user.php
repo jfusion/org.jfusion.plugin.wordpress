@@ -131,7 +131,7 @@ class User extends \JFusion\Plugin\User
 		// find the most capable one
 		foreach ($y as $cap) {
 			foreach ($groups as $group) {
-				if(strtolower($group->name)== strtolower($cap)){
+				if(strtolower($group->name) == strtolower($cap)){
 					$groupid = $group->id;
 					$groupname = $cap;
 
@@ -144,9 +144,6 @@ class User extends \JFusion\Plugin\User
             $result->groups[] = $groupid;
             $result->groupnames[] = $groupname;
         }
-		// fill the userobject
-		$result->group_id          = $groupid;
-		$result->group_name        = $groupname;
 		$result->block             = false;
 
 		// todo get to find out where user status stands for. As far as I can see we have also two additional fields
