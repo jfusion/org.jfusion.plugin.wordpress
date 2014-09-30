@@ -53,10 +53,7 @@ class User extends \JFusion\Plugin\User
 		    list($identifier_type, $identifier) = $this->getUserIdentifier($userinfo, 'user_login', 'user_email', 'ID');
 		    // Get a database object
 		    $db = Factory::getDatabase($this->getJname());
-		    //make the username case insensitive
-		    if ($identifier_type == 'username') {
-			    $identifier = $this->filterUsername($identifier);
-		    }
+
 		    // internal note: working toward the JFusion 2.0 plugin system, we read all available userdata into the user object
 		    // conversion to the JFusion user object will be done at the end for JFusion 1.x
 		    // we add an local user field to keep the original data
@@ -265,6 +262,23 @@ class User extends \JFusion\Plugin\User
 		return $username;
 	}
 
+	/**
+	 * used to validate if a user can be created or not
+	 * should throw exception if user can't be created with info about the error.
+	 *
+	 * @param $userinfo
+	 *
+	 * @return boolean
+	 */
+	function validateUser(Userinfo $userinfo)
+	{
+		$username = $this->filterUsername($userinfo->username);
+		if ($username !== $userinfo->username) {
+			throw new RuntimeException('Has Invalid Character: ' . $userinfo->username . ' vs ' . $username);
+		}
+		return true;
+	}
+
     /**
      * @param Userinfo $userinfo
      * @param Userinfo $existinguser
@@ -421,7 +435,7 @@ class User extends \JFusion\Plugin\User
 		    //prepare the variables
 		    $user = new stdClass;
 		    $user->ID = null;
-		    $user->user_login = $this->filterUsername($userinfo->username);
+		    $user->user_login = $userinfo->username;
 		    $user->user_pass = $user_password;
 		    $user->user_nicename = strtolower($userinfo->username);
 		    $user->user_email = strtolower($userinfo->email);
