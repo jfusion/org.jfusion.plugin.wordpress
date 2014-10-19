@@ -12,6 +12,7 @@
 use JFusion\Factory;
 use JFusion\Framework;
 
+use JFusion\User\Groups;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseFactory;
 use Joomla\Language\Text;
@@ -210,7 +211,7 @@ class Admin extends \JFusion\Plugin\Admin
      */
     function getDefaultUsergroup()
     {
-	    $usergroups = Framework::getUserGroups($this->getJname(), true);
+	    $usergroups = Groups::get($this->getJname(), true);
 	    if ($usergroups !== null) {
 		    $group = array();
 		    foreach ($usergroups as $usergroup) {
